@@ -14,6 +14,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
+        "*",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -21,9 +22,19 @@ app.add_middleware(
 )
 
 
-app.include_router(billing_router)
+@app.get("/")
+def root():
+    return {
+        "name": "SwasthiQ EOD Billing API",
+        "status": "running",
+    }
 
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+    }
+
+
+app.include_router(billing_router)
